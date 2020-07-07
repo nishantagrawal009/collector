@@ -2,11 +2,8 @@ package main
 
 import (
 	"context"
+	"errors"
 	"io"
-
-	"github.com/pkg/mod/github.com/pkg/errors@v0.9.1"
-	"github.com/profefe/profefe/pkg/profile"
-	"github.com/profefe/profefe/pkg/storage"
 )
 
 type Querier struct {
@@ -20,11 +17,11 @@ func NewQuerier(sr Reader) *Querier {
 }
 
 
-func (q *Querier) GetProfilesTo(ctx context.Context, dst io.Writer, pids []profile.ID) error {
+func (q *Querier) GetProfilesTo(ctx context.Context, dst io.Writer, pids []ID) error {
 return errors.New("method not implemented")
 }
 
-func (q *Querier) FindMergeProfileTo(ctx context.Context, dst io.Writer, params *storage.FindProfilesParams) error {
+func (q *Querier) FindMergeProfileTo(ctx context.Context, dst io.Writer, params *FindProfilesParams) error {
 	return errors.New("method not implemented")
 }
 
