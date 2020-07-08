@@ -2,36 +2,42 @@ package profefe
 
 import (
 	"collector/profile"
-	"fmt"
 	"sync"
 )
 
 type cache struct {
 	mu       sync.Mutex
-	profiles map[string]profile.ID
+	profiles map[string][]string
 }
 func newCache() *cache {
 	c := &cache{
-		profiles: make(map[string]profile.ID),
+		profiles: make(map[string][]string),
 	}
 	return c
 }
 
-func (c *cache )PutProfilesIds(service string, profileId profile.ID) {
+func (c *cache )PutProfilesIds(service string, profiletype string, profileId profile.ID) {
 	c.mu.Lock()
-	c.profiles[service] = profileId
+	_, ok := c.profiles[profiletype]
+	if !ok {
+		c.profiles[profiletype]= make([]string,5)
+	}
+	c.profiles[profiletype] = append(c.profiles[profiletype],string(profileId))
+
 	c.mu.Unlock()
 }
 
-func (c *cache) GetProfileIds(service string) (profile.ID,error) {
-
+func (c *cache) GetProfileIds() (GetProfileDisplay,error) {
+	gpd := GetProfileDisplay{}
 	c.mu.Lock()
-	profiles, ok := c.profiles[service]
-	if !ok {
-		return "", fmt.Errorf("could not find the service")
-	}
+	gpd.Cpu  = c.profiles["cpu"]
+	gpd.Heap = c.profiles["heap"]
+	gpd.Blocks = c.profiles["block"]
+	gpd.GoRoutine = c.profiles["goroutine"]
+	gpd.Mutex = c.profiles["mutex"]
+	gpd.Thread = c.profiles["threadcreate"]
 	c.mu.Unlock()
-	return profiles,nil
+	return gpd,nil
 }
 
 

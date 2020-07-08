@@ -155,15 +155,29 @@ func (h *ProfilesHandler) HandleMergeProfiles(w http.ResponseWriter, r *http.Req
 }
 
 func (h *ProfilesHandler) HandleDisplayProfiles(w http.ResponseWriter, r *http.Request) error {
-	profileId, err  := h.collector.cache.GetProfileIds("pusher-service")
+
 	t:= template.New("my template")
-	tmpl,err := t.Parse("<h1>Welcome to profiling dash board</h1><body>{{.ServiceName}} <br>{{.ProfileId}}</body>")
+	tmpl,err := t.Parse("<h1>Welcome to profiling dash board</h1>" +
+		"<body>{{.ServiceName}} <br>" +
+		"<h2>Cpu</h2>"+
+		"<ul>{{range .Cpu}}<li>{{.}}</li>{{end}}</ul>" +
+		"<h2>Heap</h2>"+
+		"<ul>{{range .Heap}}<li>{{.}}</li>{{end}}</ul>" +
+		"<h2>Blocks</h2>"+
+		"<ul>{{range .Blocks}}<li>{{.}}</li>{{end}}</ul>" +
+		"<h2>GoRoutine</h2>"+
+		"<ul>{{range .GoRoutine}}<li>{{.}}</li>{{end}}</ul>" +
+		"<h2>Mutex</h2>"+
+		"<ul>{{range .Mutex}}<li>{{.}}</li>{{end}}</ul>" +
+		"<h2>Thread</h2>"+
+		"<ul>{{range .Thread}}<li>{{.}}</li>{{end}}</ul>" +
+		"</body>")
 	if err != nil {
 		panic(err)
 	}
-	data := GetProfileDisplay{
-		ServiceName:"profile-pusher",
-		ProfileId:string(profileId),
+	data, err  := h.collector.cache.GetProfileIds()
+	if err != nil {
+		panic(err)
 	}
 	err = tmpl.Execute(w, data)
 	if err != nil {

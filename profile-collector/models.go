@@ -18,7 +18,12 @@ type Profile struct {
 
 type GetProfileDisplay struct{
 	ServiceName string
-	ProfileId string
+	Cpu  []string
+	Heap []string
+	Blocks []string
+	GoRoutine []string
+	Mutex  []string
+	Thread []string
 }
 
 func ProfileFromProfileMeta(meta profile.Meta) Profile {
