@@ -1,9 +1,9 @@
 package profefe
 
 import (
+	"collector/log"
 	"net/http"
 
-	"github.com/profefe/profefe/pkg/log"
 	"github.com/prometheus/client_golang/prometheus"
 )
 

@@ -1,12 +1,12 @@
 package profefe
 
 import (
+	"collector/log"
 	"encoding/json"
 	"io"
 	"net/http"
 	"strconv"
 
-	"github.com/profefe/profefe/pkg/log"
 	"go.uber.org/zap"
 	"golang.org/x/xerrors"
 )

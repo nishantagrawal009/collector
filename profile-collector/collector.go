@@ -1,16 +1,16 @@
 package profefe
 
 import (
+	"collector/log"
+	"collector/profile"
+	"collector/storage"
 	"context"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"time"
+	"collector/pprofUtil"
 
-	"github.com/profefe/profefe/pkg/log"
-	"github.com/profefe/profefe/pkg/pprofutil"
-	"github.com/profefe/profefe/pkg/profile"
-	"github.com/profefe/profefe/pkg/storage"
 )
 
 type Collector struct {
@@ -36,7 +36,7 @@ func (c *Collector) WriteProfile(ctx context.Context, params *storage.WriteProfi
 		return Profile{}, err
 	}
 
-	parser := pprofutil.NewProfileParser(data)
+	parser := pprofUtil.NewProfileParser(data)
 
 	pp, err := parser.ParseProfile()
 	if err != nil {

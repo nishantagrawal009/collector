@@ -1,10 +1,10 @@
 package profefe
 
 import (
+	"collector/log"
+	"collector/storage"
 	"net/http"
 
-	"github.com/profefe/profefe/pkg/log"
-	"github.com/profefe/profefe/pkg/storage"
 )
 
 type ServicesHandler struct {

@@ -10,6 +10,12 @@ import (
 
 )
 
+var (
+	ErrNotFound       = errors.New("not found")
+	ErrNoResults      = errors.New("no results")
+	ErrNotImplemented = errors.New("method not implemented")
+)
+
 type Storage interface {
 	Writer
 	Reader
@@ -26,6 +32,7 @@ type WriteProfileParams struct {
 	Labels     profile.Labels
 	CreatedAt  time.Time
 }
+
 func (params *WriteProfileParams) Validate() error {
 	if params == nil {
 		return errors.New("empty params")

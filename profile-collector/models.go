@@ -1,9 +1,9 @@
 package profefe
 
 import (
+	"collector/profile"
 	"time"
 
-	"github.com/profefe/profefe/pkg/profile"
 )
 
 // Profile is the JSON representation of a profile returned with API response.

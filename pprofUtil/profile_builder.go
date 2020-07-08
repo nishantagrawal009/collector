@@ -1,4 +1,4 @@
-package profileUtil
+package pprofUtil
 
 import "collector/profile"
 import  pprofProfile "collector/internal/pprof/profile"

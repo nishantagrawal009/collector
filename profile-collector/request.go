@@ -1,14 +1,15 @@
 package profefe
 
 import (
+	"collector/profile"
+	"collector/storage"
 	"fmt"
 	"net/http"
 	"net/url"
 	"strconv"
 	"time"
 
-	"github.com/profefe/profefe/pkg/profile"
-	"github.com/profefe/profefe/pkg/storage"
+
 	"golang.org/x/xerrors"
 )
 

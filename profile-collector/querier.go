@@ -1,14 +1,15 @@
 package profefe
 
 import (
+	pprofProfile "collector/internal/pprof/profile"
+	"collector/log"
+	"collector/profile"
+	"collector/storage"
 	"context"
 	"io"
 	"sort"
 
-	pprofProfile "github.com/profefe/profefe/internal/pprof/profile"
-	"github.com/profefe/profefe/pkg/log"
-	"github.com/profefe/profefe/pkg/profile"
-	"github.com/profefe/profefe/pkg/storage"
+
 	"golang.org/x/xerrors"
 )
 

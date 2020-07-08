@@ -1,6 +1,9 @@
 package profefe
 
 import (
+	"collector/log"
+	"collector/profile"
+	"collector/storage"
 	"errors"
 	"fmt"
 	"net/http"
@@ -8,10 +11,7 @@ import (
 	"path"
 	"strings"
 
-	"github.com/profefe/profefe/pkg/log"
-	"github.com/profefe/profefe/pkg/pprofutil"
-	"github.com/profefe/profefe/pkg/profile"
-	"github.com/profefe/profefe/pkg/storage"
+	pprofutil "collector/pprofUtil"
 	"golang.org/x/xerrors"
 )
 
