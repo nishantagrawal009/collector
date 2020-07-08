@@ -3,7 +3,6 @@ package pprofUtil
 import (
 	"bytes"
 	pprofProfile "collector/internal/pprof/profile"
-	"fmt"
 	"io"
 	"io/ioutil"
 )
@@ -48,9 +47,9 @@ func (pr *ProfileParser) ParseProfile() (prof *pprofProfile.Profile, err error) 
 	if err != nil {
 		return nil, &ProfileParserError{err}
 	}
-	if len(pr.prof.Sample) == 0 {
-		return nil, &ProfileParserError{fmt.Errorf("profile is empty: no samples")}
-	}
+	//if len(pr.prof.Sample) == 0 {
+	//	return nil, &ProfileParserError{fmt.Errorf("profile is empty: no samples")}
+	//}
 	return pr.prof, nil
 }
 

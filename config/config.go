@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	defaultAddr        = ":10100"
+	defaultAddr        = ":8081"
 	defaultExitTimeout = 5 * time.Second
 
 	defaultStorageType = "auto"
