@@ -16,12 +16,14 @@ import (
 type Collector struct {
 	logger *log.Logger
 	sw     storage.Writer
+	cache  *cache
 }
 
 func NewCollector(logger *log.Logger, sw storage.Writer) *Collector {
 	return &Collector{
 		logger: logger,
 		sw:     sw,
+		cache: newCache(),
 	}
 }
 
@@ -49,7 +51,11 @@ func (c *Collector) WriteProfile(ctx context.Context, params *storage.WriteProfi
 	// move reader's reading position to start to allow storage writers to read the data
 	parser.Seek(0, io.SeekStart)
 
-	return c.writeProfile(ctx, params, parser)
+	profile, err := c.writeProfile(ctx, params, parser)
+
+	c.cache.PutProfilesIds(profile.Service,profile.ProfileID)
+
+	return profile,err
 }
 
 func (c *Collector) writeProfile(ctx context.Context, params *storage.WriteProfileParams, r io.Reader) (Profile, error) {
@@ -63,3 +69,4 @@ func (c *Collector) writeProfile(ctx context.Context, params *storage.WriteProfi
 	}
 	return ProfileFromProfileMeta(meta), nil
 }
+

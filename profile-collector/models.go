@@ -16,11 +16,26 @@ type Profile struct {
 	CreatedAt  time.Time      `json:"created_at,omitempty"`
 }
 
+type GetProfileDisplay struct{
+	ServiceName string
+	ProfileId string
+}
+
 func ProfileFromProfileMeta(meta profile.Meta) Profile {
 	return Profile{
 		ProfileID:  meta.ProfileID,
 		ExternalID: meta.ExternalID,
 		Type:       meta.Type.String(),
+		Service:    meta.Service,
+		Labels:     meta.Labels,
+		CreatedAt:  meta.CreatedAt.Truncate(time.Second),
+	}
+}
+func ProfileFromProfileData(meta profile.Profile) Profile {
+	return Profile{
+		ProfileID:  meta.ProfileID,
+		ExternalID: meta.ExternalID,
+		Type:       meta.Type,
 		Service:    meta.Service,
 		Labels:     meta.Labels,
 		CreatedAt:  meta.CreatedAt.Truncate(time.Second),

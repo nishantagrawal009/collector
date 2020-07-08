@@ -13,14 +13,4 @@ type Profile struct {
 	CreatedAt  time.Time `json:"created_at,omitempty"`
 }
 
-func ProfileFromProfileMeta(meta Meta) Profile {
-	return Profile{
-		ProfileID:  meta.ProfileID,
-		ExternalID: meta.ExternalID,
-		Type:       meta.Type.String(),
-		Service:    meta.Service,
-		Labels:     meta.Labels,
-		CreatedAt:  meta.CreatedAt.Truncate(time.Second),
-	}
-}
 

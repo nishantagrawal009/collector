@@ -3,7 +3,6 @@ package badger
 import (
 	"collector/log"
 	"collector/profile"
-	"fmt"
 	"sort"
 	"sync"
 	"time"
@@ -83,31 +82,4 @@ func (cache *cache) Services() []string {
 	sort.Strings(services)
 
 	return services
-}
-
-func (cache *cache) PutProfiles(service string, profile profile.Meta) {
-	cache.mu.Lock()
-	cache.profiles[service] = ProfileFromProfileMeta(profile)
-	cache.mu.Unlock()
-}
-
-func (cache *cache) GetProfile(service string) (profile.Profile,error) {
-	cache.mu.Lock()
-	profiles, ok := cache.profiles[service]
-	if !ok {
-		return profile.Profile{}, fmt.Errorf("could not find the service")
-	}
-	cache.mu.Unlock()
-	return profiles,nil
-}
-
-func ProfileFromProfileMeta(meta profile.Meta) profile.Profile {
-	return profile.Profile{
-		ProfileID:  meta.ProfileID,
-		ExternalID: meta.ExternalID,
-		Type:       meta.Type.String(),
-		Service:    meta.Service,
-		Labels:     meta.Labels,
-		CreatedAt:  meta.CreatedAt.Truncate(time.Second),
-	}
 }

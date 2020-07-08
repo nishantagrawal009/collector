@@ -158,7 +158,6 @@ func (st *Storage) writeProfileData(ctx context.Context, meta profile.Meta, id, 
 	}
 
 	st.cache.PutService(meta.Service, expiresAt)
-	st.cache.PutProfiles(meta.Service, meta)
 	return nil
 }
 
