@@ -26,7 +26,7 @@ type Config struct {
 }
 
 func (conf *Config) RegisterFlags(f *flag.FlagSet) {
-	f.StringVar(&conf.Dir, "badger.dir", "", "badger data dir")
+	f.StringVar(&conf.Dir, "badger.dir", "badger", "badger data dir")
 	f.DurationVar(&conf.ProfileTTL, "badger.data-ttl", defaultRetentionPeriod, "badger data ttl")
 	f.DurationVar(&conf.GCInterval, "badger.gc-interval", defaultGCInternal, "interval in which the badger garbage collector is run")
 	f.Float64Var(&conf.GCDiscardRatio, "badger.gc-discard-ratio", defaultGCDiscardRatio, "a badger file is rewritten if this ratio of the file can be discarded")
