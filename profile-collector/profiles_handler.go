@@ -46,6 +46,8 @@ func (h *ProfilesHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		err = h.HandleMergeProfiles(w, r)
 	} else if strings.HasPrefix(urlPath, apiProfilesPath) {
 		err = h.HandleGetProfile(w, r)
+	} else if urlPath == apiProfilesDisplay {
+		err = h.HandleDisplayProfiles(w,r)
 	} else {
 		err = ErrNotFound
 	}
@@ -60,6 +62,7 @@ func (h *ProfilesHandler) HandleCreateProfile(w http.ResponseWriter, r *http.Req
 	}
 
 	profModel, err := h.collector.WriteProfile(r.Context(), params, r.Body)
+
 	if err != nil {
 		var perr *pprofutil.ProfileParserError
 		if errors.As(err, &perr) {
@@ -67,6 +70,7 @@ func (h *ProfilesHandler) HandleCreateProfile(w http.ResponseWriter, r *http.Req
 		}
 		return StatusError(http.StatusInternalServerError, "failed to collect profile", err)
 	}
+	fmt.Println("response profmodel :", profModel)
 
 	ReplyJSON(w, profModel)
 
@@ -147,4 +151,9 @@ func (h *ProfilesHandler) HandleMergeProfiles(w http.ResponseWriter, r *http.Req
 		return ErrNoResults
 	}
 	return err
+}
+
+func (h *ProfilesHandler) HandleDisplayProfiles(w http.ResponseWriter, r *http.Request) error {
+	fmt.Fprintf(w, "hello you list of profiles are")
+	return nil
 }

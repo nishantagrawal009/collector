@@ -12,6 +12,7 @@ const (
 	apiProfilesMergePath = "/api/0/profiles/merge"
 	apiServicesPath      = "/api/0/services"
 	apiVersionPath       = "/api/0/version"
+	apiProfilesDisplay	 = "/api/0/display/profile"
 )
 
 func SetupRoutes(

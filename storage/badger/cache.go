@@ -2,6 +2,8 @@ package badger
 
 import (
 	"collector/log"
+	"collector/profile"
+	"fmt"
 	"sort"
 	"sync"
 	"time"
@@ -13,11 +15,13 @@ import (
 type cache struct {
 mu       sync.Mutex
 services map[string]uint64
+profiles map[string]profile.Profile
 }
 
 func newCache(logger *log.Logger, db *badger.DB) *cache {
 	c := &cache{
 		services: make(map[string]uint64),
+		profiles: make(map[string]profile.Profile),
 	}
 
 	if err := c.prefillServices(db); err != nil {
@@ -81,3 +85,29 @@ func (cache *cache) Services() []string {
 	return services
 }
 
+func (cache *cache) PutProfiles(service string, profile profile.Meta) {
+	cache.mu.Lock()
+	cache.profiles[service] = ProfileFromProfileMeta(profile)
+	cache.mu.Unlock()
+}
+
+func (cache *cache) GetProfile(service string) (profile.Profile,error) {
+	cache.mu.Lock()
+	profiles, ok := cache.profiles[service]
+	if !ok {
+		return profile.Profile{}, fmt.Errorf("could not find the service")
+	}
+	cache.mu.Unlock()
+	return profiles,nil
+}
+
+func ProfileFromProfileMeta(meta profile.Meta) profile.Profile {
+	return profile.Profile{
+		ProfileID:  meta.ProfileID,
+		ExternalID: meta.ExternalID,
+		Type:       meta.Type.String(),
+		Service:    meta.Service,
+		Labels:     meta.Labels,
+		CreatedAt:  meta.CreatedAt.Truncate(time.Second),
+	}
+}
