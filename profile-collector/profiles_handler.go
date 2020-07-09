@@ -157,19 +157,11 @@ func (h *ProfilesHandler) HandleMergeProfiles(w http.ResponseWriter, r *http.Req
 func (h *ProfilesHandler) HandleDisplayProfiles(w http.ResponseWriter, r *http.Request) error {
 	t:= template.New("my template")
 	tmpl,err := t.Parse("<h1>Welcome to profiling dash board</h1>" +
-		"<body>{{.ServiceName}} <br>" +
+		"<body>" +
 		"<h2>Cpu</h2>"+
-		"<ul>{{range .Cpu}}<li><a href=\"http://localhost:8081/api/0/profiles/{{.}}\">{{.}}</a></li>{{end}}</ul>" +
-		"<h2>Heap</h2>"+
-		"<ul>{{range .Heap}}<li><a href=\"http://localhost:8081/api/0/profiles/{{.}}\">{{.}}</a></li>{{end}}</ul>" +
-		"<h2>Blocks</h2>"+
-		"<ul>{{range .Blocks}}<li><a href=\"http://localhost:8081/api/0/profiles/{{.}}\">{{.}}</a></li>{{end}}</ul>" +
-		"<h2>GoRoutine</h2>"+
-		"<ul>{{range .GoRoutine}}<li><a href=\"http://localhost:8081/api/0/profiles/{{.}}\">{{.}}</a></li>{{end}}</ul>" +
-		"<h2>Mutex</h2>"+
-		"<ul>{{range .Mutex}}<li><a href=\"http://localhost:8081/api/0/profiles/{{.}}\">{{.}}</a></li>{{end}}</ul>" +
-		"<h2>Thread</h2>"+
-		"<ul>{{range .Thread}}<li><a href=\"http://localhost:8081/api/0/profiles/{{.}}\">{{.}}</a></li>{{end}}</ul>" +
+		"<ul>{{range $key, $value := .Services}}<li>" +
+		"{{ $key }}"+
+		"</li>{{end}}</ul>" +
 		"</body>")
 	if err != nil {
 		panic(err)
