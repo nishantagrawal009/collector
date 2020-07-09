@@ -18,12 +18,7 @@ func newCache() *cache {
 
 func (c *cache )PutProfilesIds(service string, profiletype string, profileId profile.ID) {
 	c.mu.Lock()
-	_, ok := c.profiles[profiletype]
-	if !ok {
-		c.profiles[profiletype]= make([]string,5)
-	}
 	c.profiles[profiletype] = append(c.profiles[profiletype],string(profileId))
-
 	c.mu.Unlock()
 }
 

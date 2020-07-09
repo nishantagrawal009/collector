@@ -1,0 +1,15 @@
+"<h1>Welcome to profiling dash board</h1>" +
+"<body>{{.ServiceName}} <br>" +
+"<h2>Cpu</h2>"+
+"<ul>{{range .Cpu}}<li>{{.}}</li>{{end}}</ul>" +
+"<h2>Heap</h2>"+
+"<ul>{{range .Heap}}<li>{{.}}</li>{{end}}</ul>" +
+"<h2>Blocks</h2>"+
+"<ul>{{range .Blocks}}<li>{{.}}</li>{{end}}</ul>" +
+"<h2>GoRoutine</h2>"+
+"<ul>{{range .GoRoutine}}<li>{{.}}</li>{{end}}</ul>" +
+"<h2>Mutex</h2>"+
+"<ul>{{range .Mutex}}<li>{{.}}</li>{{end}}</ul>" +
+"<h2>Thread</h2>"+
+"<ul>{{range .Thread}}<li>{{.}}</li>{{end}}</ul>" +
+"</body>">
