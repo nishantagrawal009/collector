@@ -2,6 +2,7 @@ package profefe
 
 import (
 	"collector/profile"
+	"fmt"
 	"time"
 
 )
@@ -25,6 +26,9 @@ type GetProfileDisplay struct{
 	GoRoutine []string
 	Mutex  []string
 	Thread []string
+}
+func (display *GetProfileDisplay) handleClick(profileId string){
+	fmt.Println("handle profile id = ", profileId)
 }
 
 func ProfileFromProfileMeta(meta profile.Meta) Profile {
