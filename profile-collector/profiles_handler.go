@@ -175,7 +175,7 @@ func (h *ProfilesHandler) HandleDisplayProfiles(w http.ResponseWriter, r *http.R
 										"<ul>"+
 												"{{range $id := $ids}}"+
 												"<li>"+
-													"<a href=\"http://localhost:8081/api/0/metrics/profile/\">{{$id}}</a>"+
+													"<a href=\"http://localhost:8081/api/0/metrics/profile/?profileId={{$id}}\">{{$id}}</a>"+
 												"</li>"+
 												"{{end}}"+
 										"</ul>"+
@@ -206,11 +206,18 @@ func (h *ProfilesHandler) HandleDisplayProfiles(w http.ResponseWriter, r *http.R
 }
 
 func (h *ProfilesHandler) HandleMetricsDisplay(w http.ResponseWriter, r *http.Request) error {
+
+	keys, ok := r.URL.Query()["profileId"]
+	if !ok || len(keys[0]) < 1 {
+		return errors.New("profile id is missing is missing")
+	}
+	key := keys[0]
+	pprofUrl :=  "http://localhost:8081/api/0/profiles/"+key
 	goExecutable, _ := exec.LookPath("go")
 	// construct `go version` command
 	cmdGoVer := &exec.Cmd{
 		Path:   goExecutable,
-		Args:   []string{goExecutable, "tool", "pprof", "-http=:8082", "http://localhost:8081/api/0/profiles/bs3kb4dgrkrhbkr5a0i0"},
+		Args:   []string{goExecutable, "tool", "pprof", "-http=:8082", pprofUrl},
 		Stdout: os.Stdout,
 		Stderr: os.Stdout,
 	}
