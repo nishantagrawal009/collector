@@ -172,7 +172,7 @@ func (h *ProfilesHandler) HandleDisplayProfiles(w http.ResponseWriter, r *http.R
 										"<ul>"+
 												"{{range $id := $ids}}"+
 												"<li>"+
-													"{{$id}}"+
+													"<a href=\"http://localhost:8081/api/0/profiles/{{$id}}\">{{$id}}</a>"+
 												"</li>"+
 												"{{end}}"+
 										"</ul>"+
