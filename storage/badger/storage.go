@@ -93,6 +93,7 @@ func (st *Storage) WriteProfile(ctx context.Context, params *storage.WriteProfil
 		Service:   params.Service,
 		Type:      params.Type,
 		Labels:    params.Labels,
+		PodId:     params.PodId,
 		CreatedAt: createdAt,
 	}
 	if err := st.writeProfileData(ctx, meta, id, data); err != nil {

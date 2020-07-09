@@ -30,6 +30,7 @@ type WriteProfileParams struct {
 	Service    string
 	Type       profile.ProfileType
 	Labels     profile.Labels
+	PodId 	   string
 	CreatedAt  time.Time
 }
 
@@ -57,6 +58,7 @@ type FindProfilesParams struct {
 	Service      string
 	Type         profile.ProfileType
 	Labels       profile.Labels
+	PodId		 string
 	CreatedAtMin time.Time
 	CreatedAtMax time.Time
 	Limit        int

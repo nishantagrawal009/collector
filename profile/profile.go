@@ -51,6 +51,7 @@ type Meta struct {
 	Service    string           `json:"service"`
 	Type       ProfileType `json:"type"`
 	Labels     Labels      `json:"labels,omitempty"`
+	PodId    string           `json:"podId"`
 	CreatedAt  time.Time        `json:"created_at,omitempty"`
 }
 

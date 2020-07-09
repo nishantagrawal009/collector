@@ -12,6 +12,7 @@ type Profile struct {
 	Type       string         `json:"type"`
 	Service    string         `json:"service"`
 	Labels     profile.Labels `json:"labels,omitempty"`
+	PodId	   string	 	  `json:"podId"`
 	CreatedAt  time.Time      `json:"created_at,omitempty"`
 }
 
@@ -27,6 +28,7 @@ func ProfileFromProfileMeta(meta profile.Meta) Profile {
 		Type:       meta.Type.String(),
 		Service:    meta.Service,
 		Labels:     meta.Labels,
+		PodId:      meta.PodId,
 		CreatedAt:  meta.CreatedAt.Truncate(time.Second),
 	}
 }

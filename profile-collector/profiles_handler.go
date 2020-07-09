@@ -71,7 +71,6 @@ func (h *ProfilesHandler) HandleCreateProfile(w http.ResponseWriter, r *http.Req
 		}
 		return StatusError(http.StatusInternalServerError, "failed to collect profile", err)
 	}
-	fmt.Println("response profmodel :", profModel)
 
 	ReplyJSON(w, profModel)
 

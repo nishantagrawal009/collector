@@ -40,26 +40,31 @@ func parseTime(v string) (time.Time, error) {
 	return tm, nil
 }
 
-func parseProfileParams(q url.Values) (service string, ptype profile.ProfileType, labels profile.Labels, err error) {
+func parseProfileParams(q url.Values) (service string, ptype profile.ProfileType, labels profile.Labels, podId string, err error) {
 	if v := q.Get("service"); v == "" {
-		return "", profile.TypeUnknown, nil, fmt.Errorf("missing service")
+		return "", profile.TypeUnknown, nil,"", fmt.Errorf("missing service")
 	} else {
 		service = v
 	}
 
 	if pt, err := getProfileType(q); err != nil {
-		return "", profile.TypeUnknown, nil, fmt.Errorf("bad profile type %q: %s", q.Get("type"), err)
+		return "", profile.TypeUnknown, nil,"", fmt.Errorf("bad profile type %q: %s", q.Get("type"), err)
 	} else {
 		ptype = pt
 	}
 
 	if lbs, err := getLabels(q); err != nil {
-		return "", profile.TypeUnknown, nil, fmt.Errorf("bad labels %q: %s", q.Get("labels"), err)
+		return "", profile.TypeUnknown, nil,"", fmt.Errorf("bad labels %q: %s", q.Get("labels"), err)
 	} else {
 		labels = lbs
 	}
+	if v := q.Get("podId"); v == ""{
+		return "", profile.TypeUnknown, nil,"", fmt.Errorf("missing pid")
+	} else {
+		podId = v
+	}
 
-	return service, ptype, labels, nil
+	return service, ptype, labels,podId, nil
 }
 
 func parseWriteProfileParams(in *storage.WriteProfileParams, r *http.Request) error {
@@ -69,7 +74,7 @@ func parseWriteProfileParams(in *storage.WriteProfileParams, r *http.Request) er
 
 	q := r.URL.Query()
 
-	service, ptype, labels, err := parseProfileParams(q)
+	service, ptype, labels,podId, err := parseProfileParams(q)
 	if err != nil {
 		return StatusError(http.StatusBadRequest, fmt.Sprintf("bad request: %s", err), nil)
 	}
@@ -78,6 +83,7 @@ func parseWriteProfileParams(in *storage.WriteProfileParams, r *http.Request) er
 		Service: service,
 		Type:    ptype,
 		Labels:  labels,
+		PodId:   podId,
 	}
 
 	if v := q.Get("created_at"); v != "" {
@@ -102,7 +108,7 @@ func parseFindProfileParams(in *storage.FindProfilesParams, r *http.Request) (er
 
 	q := r.URL.Query()
 
-	service, ptype, labels, err := parseProfileParams(q)
+	service, ptype, labels,podId, err := parseProfileParams(q)
 	if err != nil {
 		return StatusError(http.StatusBadRequest, fmt.Sprintf("bad request: %s", err), nil)
 	}
@@ -111,6 +117,7 @@ func parseFindProfileParams(in *storage.FindProfilesParams, r *http.Request) (er
 		Service: service,
 		Type:    ptype,
 		Labels:  labels,
+		PodId:   podId,
 	}
 
 	if v := q.Get("from"); v != "" {
