@@ -7,18 +7,6 @@ import (
 	"testing"
 )
 
-func TestCache_writeAndGet(t *testing.T) {
-	c:= newCache()
-	c.PutProfilesIds("profile-push","abc","1","")
-	dashBoard,_ := c.GetProfileIds()
-	fmt.Println(dashBoard)
-}
-func TestCache_writeIntoWeb(t *testing.T) {
-	c:= newCache()
-	c.PutProfilesIds("profile-push","abc","1","")
-	dashBoard,_ := c.GetProfileIds()
-	fmt.Println(dashBoard)
-}
 func TestCMD_Execute(t *testing.T) {
 	// get `go` executable path
 	goExecutable, _ := exec.LookPath("go")

@@ -53,7 +53,7 @@ func (c *Collector) WriteProfile(ctx context.Context, params *storage.WriteProfi
 
 	profile, err := c.writeProfile(ctx, params, parser)
 
-	c.cache.PutProfilesIds(profile.Service,profile.PodId,profile.Type,profile.ProfileID)
+	c.cache.PutProfilesIds(profile.Service,profile.PodId,profile.Type,profile.ProfileID, profile.CreatedAt)
 
 	return profile,err
 }
