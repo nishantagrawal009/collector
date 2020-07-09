@@ -157,23 +157,45 @@ func (h *ProfilesHandler) HandleMergeProfiles(w http.ResponseWriter, r *http.Req
 func (h *ProfilesHandler) HandleDisplayProfiles(w http.ResponseWriter, r *http.Request) error {
 	t:= template.New("my template")
 	tmpl,err := t.Parse("<h1>Welcome to profiling dash board</h1>" +
-		"<body>{{.ServiceName}} <br>" +
-		"<h2>Cpu</h2>"+
-		"<ul>{{range .Cpu}}<li><a href=\"http://localhost:8081/api/0/profiles/{{.}}\">{{.}}</a></li>{{end}}</ul>" +
-		"<h2>Heap</h2>"+
-		"<ul>{{range .Heap}}<li><a href=\"http://localhost:8081/api/0/profiles/{{.}}\">{{.}}</a></li>{{end}}</ul>" +
-		"<h2>Blocks</h2>"+
-		"<ul>{{range .Blocks}}<li><a href=\"http://localhost:8081/api/0/profiles/{{.}}\">{{.}}</a></li>{{end}}</ul>" +
-		"<h2>GoRoutine</h2>"+
-		"<ul>{{range .GoRoutine}}<li><a href=\"http://localhost:8081/api/0/profiles/{{.}}\">{{.}}</a></li>{{end}}</ul>" +
-		"<h2>Mutex</h2>"+
-		"<ul>{{range .Mutex}}<li><a href=\"http://localhost:8081/api/0/profiles/{{.}}\">{{.}}</a></li>{{end}}</ul>" +
-		"<h2>Thread</h2>"+
-		"<ul>{{range .Thread}}<li><a href=\"http://localhost:8081/api/0/profiles/{{.}}\">{{.}}</a></li>{{end}}</ul>" +
+		"<body>" +
+		"<ul>{{range $serviceName, $podnames:= .Services}}" +
+			"<li>" +
+			"<h2>"+"{{ $serviceName }}"+"</h2>"+
+				"<ul>"+
+				"{{range $podname, $profilenames:= $podnames}}"+
+					"<li>"+
+					"<h3>"+"{{ $podname }}"+"</h3>"+
+						"<ul>"+
+							"{{range $type, $ids := $profilenames}}"+
+								"<li>"+
+										"<h4>"+"{{ $type }}"+"</h4>"+
+										"<ul>"+
+												"{{range $id := $ids}}"+
+												"<li>"+
+													"<a href=\"http://localhost:8081/api/0/profiles/{{$id}}\">{{$id}}</a>"+
+												"</li>"+
+												"{{end}}"+
+										"</ul>"+
+								"</li>"+
+							"{{end}}"+
+						"</ul>"+
+					"</li>"+
+				"{{end}}"+
+				"</ul>"+
+			"</li>"+
+			 "{{end}}"+
+		"</ul>" +
 		"</body>")
 	if err != nil {
 		panic(err)
 	}
+	//
+	//h.collector.cache.PutProfilesIds("dumm--service1","abc1","cpu","1")
+	//h.collector.cache.PutProfilesIds("dumm--service1","abc1","cpu","1")
+	//h.collector.cache.PutProfilesIds("dumm--service1","abc2","heap","1")
+	//h.collector.cache.PutProfilesIds("dumm--service2","abc1","cpu","1")
+	//h.collector.cache.PutProfilesIds("dumm--service2","abc1","heap","1")
+
 	data, err  := h.collector.cache.GetProfileIds()
 	if err != nil {
 		panic(err)
