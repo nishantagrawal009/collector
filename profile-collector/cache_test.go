@@ -11,7 +11,7 @@ func TestCache_writeAndGet(t *testing.T) {
 	dashBoard,_ := c.GetProfileIds()
 	fmt.Println(dashBoard)
 }
-func TestCache_writeAndGet(t *testing.T) {
+func TestCache_writeIntoWeb(t *testing.T) {
 	c:= newCache()
 	c.PutProfilesIds("profile-push","abc","1")
 	dashBoard,_ := c.GetProfileIds()

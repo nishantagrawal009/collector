@@ -13,7 +13,7 @@ func newCache() *cache {
 	c := &cache {
 		dashboard: &CompleteProfileDashBoard{},
 	}
-	c.dashboard.Services  = make(map[string]map[string]string)
+	c.dashboard.Services  = make(map[string]map[string][]string)
 	return c
 }
 
@@ -21,9 +21,9 @@ func (c *cache )PutProfilesIds(service string,podname string, profileId profile.
 	c.mu.Lock()
 	_,ok := c.dashboard.Services[service]
 	if !ok {
-		c.dashboard.Services[service] = make(map[string]string)
+		c.dashboard.Services[service] = make(map[string][]string)
 	}
-	c.dashboard.Services[service][podname] = string(profileId)
+	c.dashboard.Services[service][podname] = append(c.dashboard.Services[service][podname],string(profileId))
 
 	c.mu.Unlock()
 }
