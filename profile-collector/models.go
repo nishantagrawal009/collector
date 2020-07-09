@@ -16,7 +16,7 @@ type Profile struct {
 }
 
 type CompleteProfileDashBoard struct {
-	Services  map[string]map[string][]string
+	Services  map[string]map[string]map[string][]string
 }
 
 

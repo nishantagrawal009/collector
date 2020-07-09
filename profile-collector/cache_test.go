@@ -7,13 +7,13 @@ import (
 
 func TestCache_writeAndGet(t *testing.T) {
 	c:= newCache()
-	c.PutProfilesIds("profile-push","abc","1")
+	c.PutProfilesIds("profile-push","abc","1","")
 	dashBoard,_ := c.GetProfileIds()
 	fmt.Println(dashBoard)
 }
 func TestCache_writeIntoWeb(t *testing.T) {
 	c:= newCache()
-	c.PutProfilesIds("profile-push","abc","1")
+	c.PutProfilesIds("profile-push","abc","1","")
 	dashBoard,_ := c.GetProfileIds()
 	fmt.Println(dashBoard)
 }

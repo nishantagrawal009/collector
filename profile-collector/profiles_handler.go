@@ -158,17 +158,24 @@ func (h *ProfilesHandler) HandleDisplayProfiles(w http.ResponseWriter, r *http.R
 	t:= template.New("my template")
 	tmpl,err := t.Parse("<h1>Welcome to profiling dash board</h1>" +
 		"<body>" +
-		"<ul>{{range $serviceName, $pod:= .Services}}" +
+		"<ul>{{range $serviceName, $podnames:= .Services}}" +
 			"<li>" +
-			"{{ $serviceName }}"+
+			"<h2>"+"{{ $serviceName }}"+"</h2>"+
 				"<ul>"+
-				"{{range $name, $ids:= $pod}}"+
+				"{{range $podname, $profilenames:= $podnames}}"+
 					"<li>"+
-					"{{$name}}" +
+					"<h3>"+"{{ $podname }}"+"</h3>"+
 						"<ul>"+
-							"{{range $ind, $id := $ids}}"+
+							"{{range $type, $ids := $profilenames}}"+
 								"<li>"+
-									"{{$id}}"+
+										"<h4>"+"{{ $type }}"+"</h4>"+
+										"<ul>"+
+												"{{range $id := $ids}}"+
+												"<li>"+
+													"{{$id}}"+
+												"</li>"+
+												"{{end}}"+
+										"</ul>"+
 								"</li>"+
 							"{{end}}"+
 						"</ul>"+
@@ -182,14 +189,12 @@ func (h *ProfilesHandler) HandleDisplayProfiles(w http.ResponseWriter, r *http.R
 	if err != nil {
 		panic(err)
 	}
-
-	h.collector.cache.PutProfilesIds("dumm--service1","abc1","1")
-	h.collector.cache.PutProfilesIds("dumm--service1","abc1","1")
-	h.collector.cache.PutProfilesIds("dumm--service1","abc2","1")
-	h.collector.cache.PutProfilesIds("dumm--service2","abc1","1")
-	h.collector.cache.PutProfilesIds("dumm--service2","abc1","2")
-
-
+	//
+	//h.collector.cache.PutProfilesIds("dumm--service1","abc1","cpu","1")
+	//h.collector.cache.PutProfilesIds("dumm--service1","abc1","cpu","1")
+	//h.collector.cache.PutProfilesIds("dumm--service1","abc2","heap","1")
+	//h.collector.cache.PutProfilesIds("dumm--service2","abc1","cpu","1")
+	//h.collector.cache.PutProfilesIds("dumm--service2","abc1","heap","1")
 
 	data, err  := h.collector.cache.GetProfileIds()
 	if err != nil {
