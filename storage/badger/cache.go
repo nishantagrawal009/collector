@@ -2,6 +2,7 @@ package badger
 
 import (
 	"collector/log"
+	"collector/profile"
 	"sort"
 	"sync"
 	"time"
@@ -13,11 +14,13 @@ import (
 type cache struct {
 mu       sync.Mutex
 services map[string]uint64
+profiles map[string]profile.Profile
 }
 
 func newCache(logger *log.Logger, db *badger.DB) *cache {
 	c := &cache{
 		services: make(map[string]uint64),
+		profiles: make(map[string]profile.Profile),
 	}
 
 	if err := c.prefillServices(db); err != nil {
@@ -80,4 +83,3 @@ func (cache *cache) Services() []string {
 
 	return services
 }
-

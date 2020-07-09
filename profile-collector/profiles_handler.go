@@ -6,6 +6,7 @@ import (
 	"collector/storage"
 	"errors"
 	"fmt"
+	"html/template"
 	"net/http"
 	"net/url"
 	"path"
@@ -46,6 +47,8 @@ func (h *ProfilesHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		err = h.HandleMergeProfiles(w, r)
 	} else if strings.HasPrefix(urlPath, apiProfilesPath) {
 		err = h.HandleGetProfile(w, r)
+	} else if urlPath == apiProfilesDisplay {
+		err = h.HandleDisplayProfiles(w,r)
 	} else {
 		err = ErrNotFound
 	}
@@ -60,6 +63,7 @@ func (h *ProfilesHandler) HandleCreateProfile(w http.ResponseWriter, r *http.Req
 	}
 
 	profModel, err := h.collector.WriteProfile(r.Context(), params, r.Body)
+
 	if err != nil {
 		var perr *pprofutil.ProfileParserError
 		if errors.As(err, &perr) {
@@ -67,6 +71,7 @@ func (h *ProfilesHandler) HandleCreateProfile(w http.ResponseWriter, r *http.Req
 		}
 		return StatusError(http.StatusInternalServerError, "failed to collect profile", err)
 	}
+	fmt.Println("response profmodel :", profModel)
 
 	ReplyJSON(w, profModel)
 
@@ -147,4 +152,35 @@ func (h *ProfilesHandler) HandleMergeProfiles(w http.ResponseWriter, r *http.Req
 		return ErrNoResults
 	}
 	return err
+}
+
+func (h *ProfilesHandler) HandleDisplayProfiles(w http.ResponseWriter, r *http.Request) error {
+	t:= template.New("my template")
+	tmpl,err := t.Parse("<h1>Welcome to profiling dash board</h1>" +
+		"<body>{{.ServiceName}} <br>" +
+		"<h2>Cpu</h2>"+
+		"<ul>{{range .Cpu}}<li>{{.}}</li>{{end}}</ul>" +
+		"<h2>Heap</h2>"+
+		"<ul>{{range .Heap}}<li>{{.}}</li>{{end}}</ul>" +
+		"<h2>Blocks</h2>"+
+		"<ul>{{range .Blocks}}<li>{{.}}</li>{{end}}</ul>" +
+		"<h2>GoRoutine</h2>"+
+		"<ul>{{range .GoRoutine}}<li>{{.}}</li>{{end}}</ul>" +
+		"<h2>Mutex</h2>"+
+		"<ul>{{range .Mutex}}<li>{{.}}</li>{{end}}</ul>" +
+		"<h2>Thread</h2>"+
+		"<ul>{{range .Thread}}<li>{{.}}</li>{{end}}</ul>" +
+		"</body>")
+	if err != nil {
+		panic(err)
+	}
+	data, err  := h.collector.cache.GetProfileIds()
+	if err != nil {
+		panic(err)
+	}
+	err = tmpl.Execute(w, data)
+	if err != nil {
+		panic(err)
+	}
+	return nil
 }
