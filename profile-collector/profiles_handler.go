@@ -159,7 +159,8 @@ func (h *ProfilesHandler) HandleMergeProfiles(w http.ResponseWriter, r *http.Req
 
 func (h *ProfilesHandler) HandleDisplayProfiles(w http.ResponseWriter, r *http.Request) error {
 	t:= template.New("my template")
-	tmpl,err := t.Parse("<h1>Welcome to profiling dash board</h1>" +
+	tmpl,err := t.Parse("<head><meta http-equiv=\"refresh\" content=\"3\" /></head>" +
+		"<h1>Welcome to profiling dash board</h1>" +
 		"<body>" +
 		"<ul>{{range $serviceName, $podnames:= .Services}}" +
 			"<li>" +
