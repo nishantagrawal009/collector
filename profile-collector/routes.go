@@ -13,6 +13,7 @@ const (
 	apiServicesPath      = "/api/0/services"
 	apiVersionPath       = "/api/0/version"
 	apiProfilesDisplay	 = "/api/0/display/profile"
+	apiProfileMetricsView = "/api/0/metrics/profile"
 )
 
 func SetupRoutes(

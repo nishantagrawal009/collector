@@ -9,6 +9,8 @@ import (
 	"html/template"
 	"net/http"
 	"net/url"
+	"os"
+	"os/exec"
 	"path"
 	"strings"
 
@@ -49,6 +51,8 @@ func (h *ProfilesHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		err = h.HandleGetProfile(w, r)
 	} else if urlPath == apiProfilesDisplay {
 		err = h.HandleDisplayProfiles(w,r)
+	} else if urlPath == apiProfileMetricsView {
+		err = h.HandleMetricsDisplay(w,r)
 	} else {
 		err = ErrNotFound
 	}
@@ -171,7 +175,7 @@ func (h *ProfilesHandler) HandleDisplayProfiles(w http.ResponseWriter, r *http.R
 										"<ul>"+
 												"{{range $id := $ids}}"+
 												"<li>"+
-													"<a href=\"http://localhost:8081/api/0/profiles/{{$id}}\">{{$id}}</a>"+
+													"<a href=\"http://localhost:8081/api/0/metrics/profile/\">{{$id}}</a>"+
 												"</li>"+
 												"{{end}}"+
 										"</ul>"+
@@ -188,12 +192,7 @@ func (h *ProfilesHandler) HandleDisplayProfiles(w http.ResponseWriter, r *http.R
 	if err != nil {
 		panic(err)
 	}
-	//
-	//h.collector.cache.PutProfilesIds("dumm--service1","abc1","cpu","1")
-	//h.collector.cache.PutProfilesIds("dumm--service1","abc1","cpu","1")
-	//h.collector.cache.PutProfilesIds("dumm--service1","abc2","heap","1")
-	//h.collector.cache.PutProfilesIds("dumm--service2","abc1","cpu","1")
-	//h.collector.cache.PutProfilesIds("dumm--service2","abc1","heap","1")
+
 
 	data, err  := h.collector.cache.GetProfileIds()
 	if err != nil {
@@ -202,6 +201,22 @@ func (h *ProfilesHandler) HandleDisplayProfiles(w http.ResponseWriter, r *http.R
 	err = tmpl.Execute(w, data)
 	if err != nil {
 		panic(err)
+	}
+	return nil
+}
+
+func (h *ProfilesHandler) HandleMetricsDisplay(w http.ResponseWriter, r *http.Request) error {
+	goExecutable, _ := exec.LookPath("go")
+	// construct `go version` command
+	cmdGoVer := &exec.Cmd{
+		Path:   goExecutable,
+		Args:   []string{goExecutable, "tool", "pprof", "-http=:8082", "http://localhost:8081/api/0/profiles/bs3kb4dgrkrhbkr5a0i0"},
+		Stdout: os.Stdout,
+		Stderr: os.Stdout,
+	}
+	// run `go version` command
+	if err := cmdGoVer.Run(); err != nil {
+		fmt.Println("Error:", err);
 	}
 	return nil
 }
