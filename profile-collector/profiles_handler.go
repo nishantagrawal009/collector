@@ -4,6 +4,7 @@ import (
 	"collector/log"
 	"collector/profile"
 	"collector/storage"
+	"collector/internal/port"
 	"errors"
 	"fmt"
 	"html/template"
@@ -207,6 +208,7 @@ func (h *ProfilesHandler) HandleDisplayProfiles(w http.ResponseWriter, r *http.R
 }
 
 func (h *ProfilesHandler) HandleMetricsDisplay(w http.ResponseWriter, r *http.Request) error {
+	port.KillPort("8082")
 
 	keys, ok := r.URL.Query()["profileId"]
 	if !ok || len(keys[0]) < 1 {
